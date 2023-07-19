@@ -9,7 +9,7 @@ Equipe:
 gabriel nogueira de moura pereira - gnmp
 
 
-jõao pedro mafaldo de paula - jpmp
+joão pedro mafaldo de paula - jpmp
 
 
 mariana guimarães coêlho - mgc3
