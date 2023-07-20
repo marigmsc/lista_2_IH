@@ -1,4 +1,6 @@
 lw x8,score #carrega o score inicializado com zero no registrador x8
+
+
 loop: #inicia um loop pra ler a string
     lb x5,1025(x0) #carrega um caractere da string no registrador x5
     lw x6,space # compara o caractere com o valor ascii do espaço para saber o fim da string
@@ -34,8 +36,6 @@ consonant:
  addi x8,x8,1 #Adiciona um ao score
  jal x1,loop #Volta pro loop
  
-
-
 vogal:
 jal x1,loop #Se for vogal, ele só roda o loop de novo
 
