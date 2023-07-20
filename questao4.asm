@@ -1,10 +1,10 @@
-lw x8,playeronescore
+lw x8,scoreplayer1
 loop:
-    lw x6,1025(x0)
-    lw x10,space 
-    beq x6,x10,calcplayer1score
-    lw x10,zero
-    beq x6,x10,calcplayer2score
+    lw x6,1025(x0) #recebe caractere do teclado
+    lw x10,space #se for espaço, é a palavra do próximo player(player2)
+    beq x6,x10,calcplayer1score #jump para função que calcula o score do player 1
+    lw x10,point #se for ponto, acabou a leitura do player 2
+    beq x6,x10,calcplayer2score #jump para função que calcula o score do player2
 
 #   A,E,I,O,U = 1 ponto
     lw x10,A 
@@ -71,7 +71,7 @@ loop:
 
 
 
-
+#Adiciona ao score de acordo com a pontuação da letra
 onepoint:
     addi x8,x8,1
     jal x1,loop
@@ -93,19 +93,79 @@ sixpoints:
 ninepoints:
     addi x8,x8,9
     jal x1,loop
-calcplayer1score:
 
+
+calcplayer1score:
+    sw x8,scoreplayer1
+    xor x8,x8,x8
+    jal ra,loop
 
 calcplayer2score:
+    sw x8,scoreplayer2
+    xor x8,x8,x8
 
+    
+calcwinner:
+    xor x6,x6,x6
+    lw x6,scoreplayer1
+    lw x8,scoreplayer2
+    blt x6,x8,player2won
+    beq x6,x8,tie
+    jal ra,player1won
+player1won:
+    lw x5,P
+    sb x5,1024(x0)
+    lw x5,L
+    sb x5,1024(x0)
+    lw x5,A
+    sb x5,1024(x0)
+    lw x5,Y
+    sb x5,1024(x0)
+    lw x5,E
+    sb x5,1024(x0)
+    lw x5,R
+    sb x5,1024(x0)
+    lw x5,space
+    sb x5,1024(x0)
+    lw x5,one
+    sb x5,1024(x0)
 
-
-
-
-
-
+    jal ra,end
+player2won:
+    lw x5,P
+    sb x5,1024(x0)
+    lw x5,L
+    sb x5,1024(x0)
+    lw x5,A
+    sb x5,1024(x0)
+    lw x5,Y
+    sb x5,1024(x0)
+    lw x5,E
+    sb x5,1024(x0)
+    lw x5,R
+    sb x5,1024(x0)
+    lw x5,space
+    sb x5,1024(x0)
+    lw x5,two
+    sb x5,1024(x0)
+	jal ra,end
+tie:
+    lw x5,T
+    sb x5,1024(x0)
+    lw x5,I
+    sb x5,1024(x0)
+    lw x5,E
+	sb x5,1024(x0)
+ 
+end:
 
 halt
+two: .word 50
+zero: .word 48
+one: .word 49
+point: .word 46
+scoreplayer2: .word 0
+scoreplayer1: .word 0
 space: .word 32
 A: .word 65
 B: .word 66
@@ -133,4 +193,3 @@ W: .word 87
 X: .word 88
 Y: .word 89
 Z: .word 90
-playeronescore: .word 0
