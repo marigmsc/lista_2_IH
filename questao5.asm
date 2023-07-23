@@ -16,11 +16,14 @@ lw x19, receive_loop_index
 lw x20, two
 lw x21, three
 lw x22, four
+lw x23, number_b
+lw x24, number_flag
 
 receive_number:
     addi x19, x19, 1
     lw x12, 1025(x0)
     beq x12, x13, end_input
+    beq x12, x14, next_num
 	addi x12, x12, -48
 
 	xor x15, x15, x15
@@ -57,19 +60,50 @@ receive_number:
         xor x9, x9, x9
         jal ra, multiply
 
+
+    
+
     next_step:
-        add x16, x16, x9
+
+        beq x24, x0, set_number1
+        beq x24, x8, set_number2
+
+        set_number1:
+            add x16, x16, x9
+            jal ra, continue_next_step
+
+        set_number2:
+            add x23, x23, x9
+
+        continue_next_step:
+            xor x9, x9, x9
+            xor x17, x17, x17
+            xor x10, x10, x10
+            addi x17, x17, 10
+            jal ra, receive_number
+        
+    next_num:
+        addi x24, x24, 1
+        xor x19, x19, x19
+        xor x10, x10, x10
         xor x9, x9, x9
         xor x17, x17, x17
-        xor x10, x10, x10
-        addi x17, x17, 10
-        jal ra, receive_number
-        
+		jal ra, receive_number
+
 
     end_input:
-        jal ra, end
+        jal ra, setup
 
 
+setup:
+    sw x16, multiplicand
+    sw x23, multiplier
+    lw x5, multiplicand
+    lw x6, multiplier
+
+    xor x9, x9, x9
+    xor x17, x17, x17
+    jal ra, multiply
 
 multiply:
     addi x10, x10, 1
@@ -113,6 +147,9 @@ space_char: .word 32
 point_char: .word 46
 mult_index: .word 0
 number_a: .word 0
+number_b: .word 0
+number_flag: .word 0
 input_flag: .word 1
 receive_loop_index: .word 0
+
 
