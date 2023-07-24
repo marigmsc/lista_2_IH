@@ -18,7 +18,7 @@ lw x21, three
 lw x22, four
 lw x23, number_b
 lw x24, number_flag
-
+#OBS PARA NUMEROS MENORES DE 4 DIGITOS DIGITE ZERO ANTES. EX:0010, 0120, 0005
 receive_number:
     addi x19, x19, 1
     lw x12, 1025(x0)
