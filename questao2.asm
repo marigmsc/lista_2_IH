@@ -5,6 +5,8 @@ lw x11,a
 lw x17, point
 lw x18, minus
 #carrega os 2 digitos de cada número do teclado
+# OBS: SE SEU INPUT FOR DE UM DIGITO DIGITE ZERO ANTES. EX: 05,04,02. SE FOR NEGATIVO APENAS -2,-5,-4
+
 
 receivenumber:
     lb x5,1025(x0) # carrega o primeiro digito de a
