@@ -123,13 +123,67 @@ multiply:
         jal ra, multiply
 
 control:
-    beq x17, x0, end
+    beq x17, x0, print_result
     beq x17, x8, next_step
     beq x17, x18, receive_number
+    xor x6,x6,x6
 
+print_result:
+logic:
+
+    xor x17,x17,x17
+    lw x6,million
+    jal x1,div
+
+    xor x17,x17,x17
+    lw x6,hundredthousand
+    jal x1,div
+
+    xor x17,x17,x17
+    lw x6,tenthousand
+    jal x1,divide
+
+    xor x17,x17,x17
+    lw x6,thousand
+    jal x1,divide
+
+    xor x17,x17,x17
+    lw x6,hundred
+    jal x1,divide
+
+    xor x17,x17,x17
+    lw x6,ten
+    jal x1,divide
+
+    xor x17,x17,x17
+    lw x6,one
+    jal x1,divide
+
+    xor x17,x17,x17
+    sb x17, 1024(x0)
+
+    beq x0,x0,end
+
+divide:
+    blt x9,x6,zero
+    sub x9,x9,x6
+    addi x17,x17,1
+    bge x9,x6,divide   
+    
+print_number:
+    addi x17,x17,48
+    sb x17, 1024(x0)
+    jalr x0,0(x1)
+
+zero:
+    xor x17,x17,x17
+    addi x17,x17,48
+    sb x17, 1024(x0)
+    jalr x0,0(x1)
 
 end:
     halt
+    
 
 multiplicand: .word 0
 multiplier: .word 0
@@ -140,6 +194,11 @@ two: .word 2
 three: .word 3
 four: .word 4
 ten: .word 10
+hundred: .word 100
+thousand: .word 1000
+tenthousand: .word 10000
+hundredthousand: .word 100000
+million: .word 1000000
 loop_index: .word 0
 loop_limit: .word 32
 char_num: .word 0
@@ -151,5 +210,3 @@ number_b: .word 0
 number_flag: .word 0
 input_flag: .word 1
 receive_loop_index: .word 0
-
-
